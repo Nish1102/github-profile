@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitprofile-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitprofile-app
+  template:
+    metadata:
+      labels:
+        app: gitprofile-app
+    spec:
+      containers:
+      - name: gitprofile-container
+        image: nish1102/gitprofile:latest  # Specify the tag explicitly
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "128Mi"  # Adjust as per your requirements
+            cpu: "100m"      # Adjust as per your requirements
+        livenessProbe:
+          httpGet:
+            path: /  # Adjust the path based on your application
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /  # Adjust the path based on your application
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
